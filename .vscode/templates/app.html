@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <title>API HUB APP</title>
+    <script defer src="{{ url_for('static', filename='app.js') }}"></script>
+    <style>
+        .main-view { display: flex; gap: 20px; padding: 20px; font-family: sans-serif; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; flex: 1; }
+        .card { background: white; padding: 15px; border-radius: 10px; text-align: center; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); }
+        .sidebar { width: 250px; background: white; padding: 20px; border-radius: 10px; height: fit-content; }
+        #modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1000; }
+        .modal-body { background: white; width: 50%; margin: 5% auto; padding: 30px; border-radius: 12px; }
+    </style>
+</head>
+<body style="background:#f4f4f9; margin: 0;">
+    <header style="background:#000; color:#fff; padding:20px; text-align:center;"><h1> API HUB APP</h1></header>
+    <div class="main-view">
+        <aside class="sidebar">
+            <h3>Filtreler</h3>
+            <label>Cinsiyet:</label>
+            <select id="gender-select" style="width:100%; margin-bottom:15px;">
+                <option value="">Tümü</option><option value="Erkek">Erkek</option><option value="Kadın">Kadın</option>
+            </select>
+            <label>Kategori:</label>
+            <select id="category-select" style="width:100%; margin-bottom:15px;">
+                <option value="">Tümü</option><option value="Ayakkabı">Ayakkabı</option>
+            </select>
+            <label>Ülke:</label>
+            <select id="country-select" style="width:100%; margin-bottom:15px;">
+                <option value="">Tümü</option><option value="US">ABD</option>
+            </select>
+            <label>Min Puan:</label>
+            <select id="min-rating" style="width:100%; margin-bottom:15px;">
+                <option value="0">Tümü</option><option value="4">4+ Yıldız</option>
+            </select>
+            <label>Maks Fiyat:</label>
+            <input type="number" id="max-price-input" placeholder="Örn: 200" style="width:100%; margin-bottom:15px;">
+            
+            <button onclick="applyFilters()" style="width:100%; padding:10px; background:black; color:white; border:none; cursor:pointer;">UYGULA</button>
+        </aside>
+
+        <main style="flex: 1;">
+            <div style="background: white; padding: 15px; border-radius: 10px; display: flex; gap: 10px; margin-bottom: 20px;">
+                <input type="text" id="search-input" placeholder="Nike model ara..." style="flex:1; padding:10px; border:1px solid #ddd; border-radius:5px;">
+                <select id="sort-select" onchange="applyFilters()">
+                    <option value="default">Sıralama</option>
+                    <option value="lowest_price">En Ucuz</option>
+                    <option value="highest_price">En Pahalı</option>
+                    <option value="highest_rating">En Yüksek Puan</option>
+                    <option value="highest_reviews">En Çok Yorum</option>
+                </select>
+                <button onclick="applyFilters()" style="padding:10px 20px; background:black; color:white; border:none; border-radius:5px; cursor:pointer;">Ara</button>
+            </div>
+            <div id="data-body" class="grid"></div>
+        </main>
+    </div>
+    <div id="modal"><div class="modal-body"><span onclick="closeModal()" style="float:right; cursor:pointer; font-size:24px;">&times;</span><div id="modal-content"></div></div></div>
+</body>
+</html>

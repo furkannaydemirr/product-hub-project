@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html lang="tr">
+<head><meta charset="utf-8"><title>{{ store_name }} - Profil</title></head>
+<body style="margin:0; font-family: sans-serif; background:#f4f4f9;">
+    <header style="background:#000; color:#fff; padding:50px; text-align:center;">
+        <div id="header-info">Yükleniyor...</div>
+        <br><a href="/" style="color:#ccc; text-decoration:none;">← Ana Havuza Dön</a>
+    </header>
+    <div id="store-products" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:20px; padding:40px;"></div>
+    <script>
+        async function loadStore() {
+            const res = await fetch(`/api/store_details/{{ store_name }}`);
+            const data = await res.json();
+            document.getElementById("header-info").innerHTML = `<h1>${data.info.name}</h1><p>⭐ Rank: ${data.info.rank} | 📦 Toplam Ürün: ${data.info.count}</p>`;
+            const grid = document.getElementById("store-products");
+            data.products.forEach(p => {
+                grid.innerHTML += `
+                    <div style="background:white; padding:15px; border-radius:10px; text-align:center;">
+                        <img src="${p.image}" style="width:100%; height:150px; object-fit:cover; border-radius:5px;">
+                        <h4>${p.title}</h4>
+                        <p style="color:red; font-weight:bold;">$${p.price} | ⭐ ${p.rating}</p>
+                    </div>`;
+            });
+        }
+        window.onload = loadStore;
+    </script>
+</body>
+</html>
